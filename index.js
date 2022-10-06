@@ -1,6 +1,9 @@
 const axios = require('axios');
 const express = require('express');
 const app = express();
+const CONFIG = {
+  port: process.env.PORT || 3000,
+};
 app.use(express.raw({type: 'application/*'}));
 app.use((req, res) => {
   const method = req.method;
@@ -44,4 +47,4 @@ app.use((req, res) => {
     }
   });
 });
-app.listen(3000, '0.0.0.0', () => console.log('Listening on 0.0.0.0:3000'));
+app.listen(CONFIG.port, '0.0.0.0', () => console.log(`Listening on 0.0.0.0:${CONFIG.port}`));

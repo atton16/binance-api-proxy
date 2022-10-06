@@ -1,7 +1,7 @@
 const axios = require('axios');
 const express = require('express');
 const app = express();
-app.use(express.raw());
+app.use(express.raw({type: 'application/*'}));
 app.use((req, res) => {
   const method = req.method;
   const path = req.path;

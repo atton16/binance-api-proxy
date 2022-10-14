@@ -70,18 +70,26 @@ exports.handler = async (event, context) => {
     }
     console.log('response.headers', response.headers);
     console.log('response.data', response.data);
+    let isJson = false;
+    if (response.headers['content-type'].indexOf('application/json') === 0) {
+      isJson = true;
+    }
     return {
       statusCode: 200,
       headers: {'content-type': response.headers['content-type']},
-      body: JSON.stringify(response.data),
+      body: isJson ? JSON.stringify(response.data) : response.data,
     };
   }).catch(error => {
     if (error.response) {
       console.log(`error response ${error.response.status}`, error.response.data);
+      let isJson = false;
+      if (error.response.headers['content-type'].indexOf('application/json') === 0) {
+        isJson = true;
+      }
       return {
         statusCode: error.response.status,
         headers: {'content-type': error.response.headers['content-type']},
-        body: error.response.data,
+        body: isJson ? JSON.stringify(error.response.data) : error.response.data,
       };
     } else if (error.request) {
       console.log('error response 504');

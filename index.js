@@ -32,7 +32,7 @@ exports.handler = async (event, context) => {
     headers: proxiedHeaders,
     params: query,
   };
-  if (isBase64Encoded !== undefined && body !== undefined) {
+  if (isBase64Encoded === true && body !== undefined) {
     request.data = Buffer.from(body, 'base64').toString();
   } else if (body !== undefined) {
     request.data = body;

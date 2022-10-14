@@ -1,0 +1,10 @@
+{
+  "callbackWaitsForEmptyEventLoop": true,
+  "functionVersion": "$LATEST",
+  "functionName": "siri-hello-world",
+  "memoryLimitInMB": "128",
+  "logGroupName": "/aws/lambda/siri-hello-world",
+  "logStreamName": "2022/10/14/[$LATEST]0fbb850e380b4fe1aff4d695eac01e01",
+  "invokedFunctionArn": "arn:aws:lambda:ap-northeast-1:912629132392:function:siri-hello-world",
+  "awsRequestId": "e99148ad-5959-4c29-8c47-b62c49afeff6"
+}

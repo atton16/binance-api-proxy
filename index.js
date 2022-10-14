@@ -1,17 +1,25 @@
 const axios = require('axios');
-const express = require('express');
-const app = express();
-const CONFIG = {
-  port: process.env.PORT || 3000,
+
+const config = {
+  debug: {
+    response: process.env.DEBUG_RESPONSE === 'true',
+  }
 };
-app.use(express.raw({type: 'application/*'}));
-app.use((req, res) => {
-  const method = req.method;
-  const path = req.path;
-  const headers = req.headers;
-  const query = req.query;
-  const body = req.body;
-  proxiedHeaders = {};
+
+exports.handler = async (event, context) => {
+  const debugKeys = Object.keys(process.env).filter(k => k.indexOf('DEBUG_') === 0);
+  const debugEnv = {};
+  for (let i = 0; i < debugKeys.length; i++) {
+    debugEnv[debugKeys[i]] = process.env[debugKeys[i]];
+  }
+  console.log('process.env.DEBUG_*', debugEnv);
+  const method = event.requestContext.http.method;
+  const path = event.rawPath;
+  const headers = event.headers;
+  const query = event.queryStringParameters;
+  const isBase64Encoded = event.isBase64Encoded;
+  const body = event.body;
+  const proxiedHeaders = {};
   if (headers['content-type'] !== undefined) {
     proxiedHeaders['Content-Type'] = headers['content-type'];
   }
@@ -24,27 +32,45 @@ app.use((req, res) => {
     headers: proxiedHeaders,
     params: query,
   };
-  if (body instanceof Buffer) {
-    request.data = body.toString();
+  if (isBase64Encoded !== undefined && body !== undefined) {
+    request.data = Buffer.from(body, 'base64').toString();
+  } else if (body !== undefined) {
+    request.data = body;
   }
   console.log(new Date());
   console.log('request', request);
-  axios.request(request).then(response => {
-    console.log('reponse', response.data);
-    res.send(response.data);
+  return axios.request(request).then(response => {
+    if (config.debug.response) {
+      console.debug('reponse', response);
+    }
+    console.log('response.data', response.data);
+    return {
+      statusCode: 200,
+      headers: JSON.parse(JSON.stringify(response.headers)),
+      body: response.data,
+    };
   }).catch(error => {
     if (error.response) {
       console.log(`error response ${error.response.status}`, error.response.data);
-      res.status(error.response.status);
-      res.send(error.response.data);
+      return {
+        statusCode: error.response.status,
+        headers: JSON.parse(JSON.stringify(error.response.headers)),
+        body: error.response.data,
+      };
     } else if (error.request) {
       console.log('error response 504');
-      res.sendStatus(504);
+      return {
+        statusCode: 504,
+        headers: {'content-type': 'text/plain; charset=utf-8'},
+        body: '',
+      };
     } else {
       console.log('error response 502', error.message);
-      res.status(502);
-      res.send(error.message);
+      return {
+        statusCode: 502,
+        headers: {'content-type': 'text/plain; charset=utf-8'},
+        body: error.message,
+      };
     }
   });
-});
-app.listen(CONFIG.port, '0.0.0.0', () => console.log(`Listening on 0.0.0.0:${CONFIG.port}`));
+};

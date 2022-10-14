@@ -1,0 +1,49 @@
+{
+  "version": "2.0",
+  "routeKey": "$default",
+  "rawPath": "/",
+  "rawQueryString": "",
+  "headers": {
+    "sec-fetch-mode": "navigate",
+    "x-amzn-tls-version": "TLSv1.2",
+    "sec-fetch-site": "cross-site",
+    "accept-language": "en,en-US;q=0.9,th;q=0.8",
+    "x-forwarded-proto": "https",
+    "x-forwarded-port": "443",
+    "dnt": "1",
+    "x-forwarded-for": "2405:9800:b640:b58:d8ee:c7c:12ac:322f",
+    "sec-fetch-user": "?1",
+    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+    "sec-gpc": "1",
+    "x-amzn-tls-cipher-suite": "ECDHE-RSA-AES128-GCM-SHA256",
+    "sec-ch-ua": "\"Chromium\";v=\"106\", \"Google Chrome\";v=\"106\", \"Not;A=Brand\";v=\"99\"",
+    "sec-ch-ua-mobile": "?0",
+    "x-amzn-trace-id": "Root=1-63492883-02cc5dae757108c0357d8e4a",
+    "sec-ch-ua-platform": "\"macOS\"",
+    "host": "w4yvazfoxflb7g3td7wji7cqji0bapkm.lambda-url.ap-northeast-1.on.aws",
+    "upgrade-insecure-requests": "1",
+    "cache-control": "max-age=0",
+    "accept-encoding": "gzip, deflate, br",
+    "sec-fetch-dest": "document",
+    "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+  },
+  "requestContext": {
+    "accountId": "anonymous",
+    "apiId": "w4yvazfoxflb7g3td7wji7cqji0bapkm",
+    "domainName": "w4yvazfoxflb7g3td7wji7cqji0bapkm.lambda-url.ap-northeast-1.on.aws",
+    "domainPrefix": "w4yvazfoxflb7g3td7wji7cqji0bapkm",
+    "http": {
+      "method": "GET",
+      "path": "/",
+      "protocol": "HTTP/1.1",
+      "sourceIp": "2405:9800:b640:b58:d8ee:c7c:12ac:322f",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+    },
+    "requestId": "e99148ad-5959-4c29-8c47-b62c49afeff6",
+    "routeKey": "$default",
+    "stage": "$default",
+    "time": "14/Oct/2022:09:14:43 +0000",
+    "timeEpoch": 1665738883728
+  },
+  "isBase64Encoded": false
+}

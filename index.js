@@ -3,6 +3,13 @@ const axios = require('axios');
 const config = {
   debug: {
     response: process.env.DEBUG_RESPONSE === 'true',
+  },
+  path: {
+    override: {
+      enable: process.env.PATH_OVERRIDE_ENABLE === 'true',
+      prefixMatch: process.env.PATH_OVERRIDE_PREFIX_MATCH || '',
+      replaceWith: process.env.PATH_OVERRIDE_REPLACE_WITH || '',
+    },
   }
 };
 
@@ -14,12 +21,30 @@ exports.handler = async (event, context) => {
   }
   console.log('process.env.DEBUG_*', debugEnv);
   const method = event.requestContext.http.method;
-  const path = event.rawPath;
+  let path = event.rawPath;
   const headers = event.headers;
   const query = event.queryStringParameters;
   const isBase64Encoded = event.isBase64Encoded;
   const body = event.body;
   const proxiedHeaders = {};
+  if (event.pathParameters && event.pathParameters.proxy) {
+    console.log('path', path);
+    const newPath = `/${event.pathParameters.proxy}`;
+    console.log('overriden path by pathParameters', newPath);
+    path = newPath;
+  } else if (config.path.override.enable) {
+    if (
+      config.path.override.prefixMatch &&
+      path.indexOf(config.path.override.prefixMatch) === 0
+    ) {
+      console.log('path', path);
+      const newPath = `${config.path.override.replaceWith}${path.substring(config.path.override.prefixMatch.length)}`;
+      console.log('overriden path by prefixMatch', newPath);
+      path = newPath;
+    }
+  }
+  console.log('event', event);
+  console.log('context', context);
   if (headers['content-type'] !== undefined) {
     proxiedHeaders['Content-Type'] = headers['content-type'];
   }
@@ -43,18 +68,19 @@ exports.handler = async (event, context) => {
     if (config.debug.response) {
       console.debug('reponse', response);
     }
+    console.log('response.headers', response.headers);
     console.log('response.data', response.data);
     return {
       statusCode: 200,
-      headers: JSON.parse(JSON.stringify(response.headers)),
-      body: response.data,
+      headers: {'content-type': response.headers['content-type']},
+      body: JSON.stringify(response.data),
     };
   }).catch(error => {
     if (error.response) {
       console.log(`error response ${error.response.status}`, error.response.data);
       return {
         statusCode: error.response.status,
-        headers: JSON.parse(JSON.stringify(error.response.headers)),
+        headers: {'content-type': error.response.headers['content-type']},
         body: error.response.data,
       };
     } else if (error.request) {

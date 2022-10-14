@@ -1,7 +1,7 @@
 rm -rf dist
 mkdir -p dist
-cp index.js dist/
-cp package-lambdaBuild.json dist/package.json
-(cd dist && npm i --only-production)
+cp *.js dist/
+cp package*.json dist/
+(cd dist && npm i --production)
 (cd dist && zip -r ../function.zip .)
 rm -rf dist

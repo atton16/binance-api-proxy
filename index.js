@@ -1,4 +1,5 @@
 const axios = require('axios');
+const querystring = require('node:querystring');
 
 const config = {
   debug: {
@@ -23,7 +24,8 @@ exports.handler = async (event, context) => {
   const method = event.requestContext.http.method;
   let path = event.rawPath;
   const headers = event.headers;
-  const query = event.queryStringParameters;
+  const query = querystring.parse(event.rawQueryString);
+  // const query = event.queryStringParameters;
   const isBase64Encoded = event.isBase64Encoded;
   const body = event.body;
   const proxiedHeaders = {};

@@ -1,7 +1,7 @@
-scp binance-api-proxy.tar siri:/tmp/binance-api-proxy.tar
+scp docker-image.tar siri:/tmp/docker-image.tar
 ssh siri "
 cd /tmp
-docker load -i binance-api-proxy.tar
-rm binance-api-proxy.tar
+docker load -i docker-image.tar
+rm docker-image.tar
 "
-rm binance-api-proxy.tar
+rm docker-image.tar

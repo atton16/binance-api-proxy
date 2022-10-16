@@ -1,1 +1,1 @@
-docker save -o binance-api-proxy.tar binance-api-proxy:latest
+docker save -o docker-image.tar binance-api-proxy:latest

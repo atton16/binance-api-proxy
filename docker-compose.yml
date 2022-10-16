@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  webapp:
+    image: binance-api-proxy:latest
+    ports:
+      - target: 3000
+        x-aws-protocol: http
+
+networks:
+  back_tier:
+    external: true
+    name: "sg-07deb5b6a932c7460"
+
+x-aws-vpc: "vpc-0a3f842cb6d25018b"
+x-aws-cluster: "siri-ecs-cluster"
+x-aws-logs_retention: 60

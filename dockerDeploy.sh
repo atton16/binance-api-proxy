@@ -6,7 +6,6 @@ docker run \
   --workdir /usr/app/src \
   -v /home/admin/binance-api-proxy:/usr/app/src \
   --health-cmd='npm run healthcheck' \
-  --expose 3000 \
   -d \
   -p 3000:3000 \
   --name binance-api-proxy \
